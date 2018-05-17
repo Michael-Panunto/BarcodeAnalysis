@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BarcodeAnalysis</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="camera_permission_rationale">Camera access is required to detect barcodes.</string>
+    <string name="ok">Okay</string>
+    <string name="low_storage_err">Required dependencies cannot be downloaded due to low device storage space</string>
+    <string name="camera_denied">Camera permission not granted. The app will now exit</string>
+</resources>
