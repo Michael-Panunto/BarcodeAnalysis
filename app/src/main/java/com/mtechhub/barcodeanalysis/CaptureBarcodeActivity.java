@@ -224,11 +224,10 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedPreviewSize(width, height)
                 .setRequestedFps(15.0f);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            builder = builder.setFocusMode(
-                    autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null
-            );
-        }
+        builder = builder.setFocusMode(
+                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null
+        );
+
 
         cameraSource = builder.setFlashMode(
             flash ? Camera.Parameters.FLASH_MODE_TORCH : null
