@@ -8,10 +8,13 @@ import android.graphics.RectF;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.mtechhub.barcodeanalysis.camera.GraphicOverlay;
 
+/**
+ * Draws a rectangle overlay for a given barcode
+ */
 class BarcodeGraphic extends GraphicOverlay.Graphic {
 
     private int id;
-    /* [0] - Green, [1] - Blue, [2] - Yellow */
+    /* [0] => Green, [1] => Blue, [2] => Yellow */
     private static final int COLOUR_CHOICES[] = {
             Color.rgb(115, 173, 67),
             Color.rgb(68, 191, 170),
@@ -46,11 +49,18 @@ class BarcodeGraphic extends GraphicOverlay.Graphic {
 
     public Barcode getBarcode() { return barcode; }
 
+    /**
+     * Redraws the graphic for a changed barcode
+     * @param barcode Barcode to redraw the overlay for
+     */
     void updateItem (Barcode barcode) {
         this.barcode = barcode;
         postInvalidate();
     }
 
+    /**
+     * Draws the rectangle overlay
+     */
     @Override
     public void draw(Canvas canvas) {
         Barcode b = barcode;

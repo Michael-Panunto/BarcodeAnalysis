@@ -43,6 +43,9 @@ import com.mtechhub.barcodeanalysis.camera.GraphicOverlay;
 
 import java.io.IOException;
 
+/**
+ * Captures and decodes all barcodes detected by a camera.
+ */
 public class CaptureBarcodeActivity extends AppCompatActivity implements BarcodeGraphicTracker.BarcodeUpdateListener {
 
     private static final String TAG = "CaptureFragment";
@@ -73,12 +76,14 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
         preview = (CameraSourcePreview) findViewById(R.id.preview);
         graphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
 
+        // Changing font for the action bar
         SpannableString ss = new SpannableString(ACTION_BAR_TITLE);
         ss.setSpan(new TypefaceSpan("Kavivanar-Regular.ttf"), 0, ss.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         android.support.v7.app.ActionBar ab = getSupportActionBar();
         ab.setTitle(ss);
 
+        // Check for permissions before continuing
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
             createCameraSource(autoFocus, flash);
@@ -86,12 +91,14 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
             requestCameraPermission();
         }
 
+        // Set tap and pinch gesture listeners
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
+        // Snackbar to provide user with gesture info
         Snackbar.make(graphicOverlay, "Tap to capture. Pinch to zoom.",
                 Snackbar.LENGTH_INDEFINITE)
-                .setActionTextColor(getResources().getColor(R.color.navbarColor))
+                .setActionTextColor(getResources().getColor(R.color.colorAccent))
                 .setAction(R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -102,6 +109,9 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
 
     }
 
+    /**
+     * Requests required permissions (CAMERA)
+     */
     private void requestCameraPermission() {
         Log.w(TAG, "Requesting camera permission");
         final String[] cameraPermissions = {Manifest.permission.CAMERA};
@@ -127,6 +137,12 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
                 .show();
     }
 
+    /**
+     * Permission request callback, handles request results
+     * @param requestCode Identifier for the request
+     * @param permissions Permissions requested
+     * @param grantResults Permissions success or failure status
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -160,6 +176,9 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
                 .show();
     }
 
+    /**
+     * Detects which touch event occurred, and runs the respective method
+     */
     @Override
     public boolean onTouchEvent (MotionEvent ev) {
         boolean s = scaleGestureDetector.onTouchEvent(ev);
@@ -167,9 +186,15 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
         return t || s || super.onTouchEvent(ev);
     }
 
+    /**
+     * Initiates a camera source
+     * @param autoFocus Boolean determines whether or not to auto focus camera during capture
+     * @param flash Boolean determines whether or not to use flash during capture
+     */
     private void createCameraSource (boolean autoFocus, boolean flash) {
         Context context = getApplicationContext();
 
+        // Set for QR and DATA MATRIX only -- Can change this as needed
         BarcodeDetector detector = new BarcodeDetector.Builder(context)
                 .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
                 .build();
@@ -232,6 +257,9 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
         }
     }
 
+    /**
+     * Begins the capture
+     */
     private void startCameraSource() throws SecurityException {
         int avail = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
                 getApplicationContext()
@@ -253,6 +281,10 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
         }
     }
 
+    /**
+     * Captures an image where the camera is currently directed
+     * @return String array containing all barcodes detected when capture was initialized
+     */
     private String[] captureImage() {
         String[] results = new String[graphicOverlay.getGraphics().size()];
         int index = 0;
@@ -264,8 +296,11 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
         return results;
     }
 
+    /**
+     * Begins an image capture if there is currently a barcode detected on screen.
+     * Sends the returned barcode data to a new activity for handling
+     */
     private boolean onTap() {
-        System.out.println("============ Capturing Image =============");
         if (!graphicOverlay.getGraphics().isEmpty()) {
             String[] results = captureImage();
             for (String s : results) {
@@ -303,6 +338,6 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
     }
     @Override
     public void onBarcodeDetected(Barcode barcode) {
-        // Can do stuff here?
+        // Barcode already handled in onTap
     }
 }

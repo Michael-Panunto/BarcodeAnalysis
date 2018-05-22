@@ -18,6 +18,11 @@ public class WebDataRetrieval extends AsyncTask<String, Void, String> {
 
     public OnRetrievalCompleted listener = null;
 
+    /**
+     * Scrapes data from the webpages provided by each url.
+     * Results are handled in BarcodeResultActivity
+     * @param urls List of Urls given from the barcode capture
+     */
     @Override
     protected String doInBackground(String... urls) {
         StringBuilder stringBuilder;
