@@ -223,7 +223,7 @@ public class CaptureBarcodeActivity extends AppCompatActivity implements Barcode
         CameraSource.Builder builder = new CameraSource.Builder(getApplicationContext(), detector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedPreviewSize(width, height)
-                .setRequestedFps(15.0f);
+                .setRequestedFps(24.0f);
         builder = builder.setFocusMode(
                 autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null
         );
